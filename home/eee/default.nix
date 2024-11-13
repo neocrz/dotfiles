@@ -12,6 +12,7 @@ in
     packages
     tmux
   ])++(with mod.local;[
+    kitty
     packages
   ]);
 

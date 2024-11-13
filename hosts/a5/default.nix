@@ -82,7 +82,9 @@ in
     isNormalUser = true;
     description = host.username;
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ ];
+    packages = with pkgs; [
+    #  thunderbird
+    ];
   };
 
   # List packages installed in system profile. To search, run:
