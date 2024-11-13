@@ -12,7 +12,9 @@ in
     packages
     tmux
   ])++(with mod.local;[
+    fonts
     kitty
+    nushell
     packages
     services
   ]);
