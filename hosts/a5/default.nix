@@ -2,8 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{ config, inputs, pkgs, pkgs-unstable, ... }:
+let 
+  host = import ./host-info.nix;
+in 
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -14,7 +16,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "a5"; # Define your hostname.
+  networking.hostName = host.hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -25,21 +27,21 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Sao_Paulo";
+  time.timeZone = host.timeZone;
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = host.defaultLocale;
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "pt_BR.UTF-8";
-    LC_IDENTIFICATION = "pt_BR.UTF-8";
-    LC_MEASUREMENT = "pt_BR.UTF-8";
-    LC_MONETARY = "pt_BR.UTF-8";
-    LC_NAME = "pt_BR.UTF-8";
-    LC_NUMERIC = "pt_BR.UTF-8";
-    LC_PAPER = "pt_BR.UTF-8";
-    LC_TELEPHONE = "pt_BR.UTF-8";
-    LC_TIME = "pt_BR.UTF-8";
+    LC_ADDRESS = host.extraLocale;
+    LC_IDENTIFICATION = host.extraLocale;
+    LC_MEASUREMENT = host.extraLocale;
+    LC_MONETARY = host.extraLocale;
+    LC_NAME = host.extraLocale;
+    LC_NUMERIC = host.extraLocale;
+    LC_PAPER = host.extraLocale;
+    LC_TELEPHONE = host.extraLocale;
+    LC_TIME = host.extraLocale;
   };
 
   # Enable the X11 windowing system.
@@ -51,12 +53,12 @@
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "br";
+    layout = host.layout;
     variant = "";
   };
 
   # Configure console keymap
-  console.keyMap = "br-abnt2";
+  console.keyMap = host.keyMap;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -81,17 +83,14 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.eee = {
+  users.users.${host.username} = {
     isNormalUser = true;
-    description = "eee";
+    description = host.username;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
     ];
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

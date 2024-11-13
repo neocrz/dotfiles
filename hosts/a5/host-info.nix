@@ -1,5 +1,6 @@
 {
   hostname = "a5";
+  username = "eee";
   system = "x86_64-linux";
   model = "Acer aspire 5";
   hybrid = "true";

@@ -1,0 +1,3 @@
+{
+  packages = import ./packages.nix;
+}
