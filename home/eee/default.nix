@@ -14,6 +14,7 @@ in
   ])++(with mod.local;[
     kitty
     packages
+    services
   ]);
 
   home.packages = [

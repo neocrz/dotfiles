@@ -17,8 +17,26 @@ in
     (gnome { inherit config pkgs host; })
     nix-conf
   ])++(with mod.local;[
-    
+    firewall
+    (games { inherit config pkgs host; })
+    (hybrid { inherit config pkgs host; })
+    nix-conf
+    services
+    (virtualisation { inherit config pkgs host; })
   ]);
+  
+  environment.sessionVariables = rec {
+    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME   = "$HOME/.local/share";
+    XDG_STATE_HOME  = "$HOME/.local/state";
+
+    # Not officially in the specification
+    XDG_BIN_HOME    = "$HOME/.local/bin";
+    PATH = [ 
+      "${XDG_BIN_HOME}"
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -50,6 +68,15 @@ in
     LC_PAPER = host.extraLocale;
     LC_TELEPHONE = host.extraLocale;
     LC_TIME = host.extraLocale;
+  };
+  i18n.inputMethod = {
+    enable = true;
+    type = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [ 
+      /* any engine you want, for example */ 
+      anthy
+      mozc
+    ];
   };
 
   # Configure console keymap
