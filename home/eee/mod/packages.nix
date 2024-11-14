@@ -6,6 +6,7 @@
     gh
     libreoffice-qt
     love
+    luajit
     mpv
     obs-studio
     obsidian

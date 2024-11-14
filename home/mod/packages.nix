@@ -1,6 +1,7 @@
-{pkgs, pkgs-stable, ...}:{
+{inputs, pkgs, pkgs-stable, ...}:{
   home.packages = (with pkgs;[
     ffmpeg
+    inputs.nixvim.packages.${system}.default
     nix-tree
     peruse
     yt-dlp
