@@ -1,4 +1,4 @@
-{config, pkgs, pkgs-stable, ...}:
+{config, inputs, lib, pkgs, pkgs-stable, ...}:
 
 {
   nix.settings = {
@@ -19,4 +19,9 @@
       "https://hydra.nixos.org/" 
     ];
   };
+
+  nix.registry = {} // lib.pipe inputs [
+    (lib.filterAttrs (_: v: (v ? _type && v._type == "flake"))) # Filter only flakes in inputs
+    (lib.mapAttrs' (a: v: lib.nameValuePair ("pinned-" + a) { flake = v; })) # Turn them into proper entries in registry
+  ]; # to use inputs.nixpkgs.url = "pinned-nixpkgs" in flakes
 }

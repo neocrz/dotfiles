@@ -9,5 +9,9 @@
     plugins = with pkgs.tmuxPlugins; [
       catppuccin
     ];
+
+    extraConfig = ''
+      set-option -g status-position top
+   '';
   };
 }
