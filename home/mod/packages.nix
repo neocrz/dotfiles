@@ -5,6 +5,7 @@
     inputs.nixvim.packages.${system}.default
     nix-tree
     peruse
+    ripgrep
     yt-dlp
   ]);
 
