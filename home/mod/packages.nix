@@ -1,6 +1,7 @@
 {inputs, pkgs, pkgs-stable, ...}:{
   home.packages = (with pkgs;[
     bat
+    fastfetch
     ffmpeg
     inputs.nixvim.packages.${system}.default
     nix-tree
