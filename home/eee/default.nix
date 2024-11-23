@@ -1,6 +1,6 @@
 { config, inputs, pkgs, pkgs-stable, system, ... }:
 let 
-  user = import ./home-info.nix;
+  user = import ../user.nix;
   mod.common = import ../mod;
   mod.local = import ./mod;
 in 
