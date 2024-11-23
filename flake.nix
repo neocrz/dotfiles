@@ -10,6 +10,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim.url = "github:neocrz/nixvim";
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { nixpkgs, nixpkgs-stable, home-manager, ... }@inputs:
@@ -47,5 +52,15 @@
         modules = [ ./hosts/a5 ];
       };
 
+      nixOnDroidConfigurations.default =
+      let
+        system = "aarch64-linux";
+        pkgs = genPkgs { n = nixpkgs; s = system; };
+        pkgs-stable = genPkgs { n = nixpkgs-stable; s = system; };
+      in
+      inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+        extraSpecialArgs = {inherit inputs pkgs pkgs-stable system;};
+        modules = [ ./home/droid ];
+      };
     };
 }

@@ -4,6 +4,7 @@
     discord
     firefox
     gh
+    krita
     libreoffice-qt
     love
     luajit
