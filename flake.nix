@@ -59,6 +59,7 @@
         pkgs-stable = genPkgs { n = nixpkgs-stable; s = system; };
       in
       inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+        inherit pkgs;
         extraSpecialArgs = {inherit inputs pkgs pkgs-stable system;};
         modules = [ ./home/droid ];
       };
