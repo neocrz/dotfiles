@@ -1,7 +1,8 @@
 {pkgs, pkgs-stable, ...}:{
   home.packages = (with pkgs;[
     audacity
-    discord
+    bitwarden-desktop
+    vesktop
     firefox
     gh
     krita
