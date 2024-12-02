@@ -2,9 +2,9 @@
   home.packages = (with pkgs;[
     audacity
     bitwarden-desktop
-    vesktop
     firefox
     gh
+    koreader
     krita
     libreoffice-qt
     love
@@ -15,6 +15,7 @@
     qbittorrent
     scrcpy
     telegram-desktop
+    vesktop
     vlc
     vscode
   ]);
