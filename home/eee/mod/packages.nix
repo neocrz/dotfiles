@@ -4,7 +4,7 @@
     bitwarden-desktop
     firefox
     gh
-    koreader
+    koodo-reader
     krita
     libreoffice-qt
     love

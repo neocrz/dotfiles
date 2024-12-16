@@ -24,7 +24,7 @@ in
   virtualisation = {
     docker = {
       enable = true;
-      # enableNvidia = true; # deprecated
+      enableNvidia = true; # deprecated
       extraOptions = "--add-runtime nvidia=/run/current-system/sw/bin/nvidia-container-runtime";
     };
 
