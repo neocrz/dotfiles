@@ -3,6 +3,7 @@
     audacity
     bitwarden-desktop
     firefox
+    gimp-with-plugins
     gh
     koodo-reader
     krita
