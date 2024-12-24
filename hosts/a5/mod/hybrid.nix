@@ -11,7 +11,7 @@ let
   busId = host.busId;
 in
 {
-  services.xserver.videoDrivers = [ "intel" "nvidia" ];
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   hardware.graphics = {
     enable = true;
     enable32Bit = true;

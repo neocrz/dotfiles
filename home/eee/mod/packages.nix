@@ -19,5 +19,6 @@
     vesktop
     vlc
     vscode
+    wacomtablet
   ]);
 }
