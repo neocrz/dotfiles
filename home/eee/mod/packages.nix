@@ -5,6 +5,7 @@
     firefox
     gimp-with-plugins
     gh
+    imgbrd-grabber
     koodo-reader
     krita
     libreoffice-qt
