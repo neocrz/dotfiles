@@ -114,6 +114,20 @@ let hostName = "a5"; in
   #  wget
   ]);
 
+  services.blueman.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true; # Power on Bluetooth at boot
+    settings = {
+      General = {
+	Experimental = true; # Enable battery level display
+	FastConnectable = true; # Faster device connections
+      };
+      Policy = {
+	AutoEnable = true; # Automatically enable controllers
+      };
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
