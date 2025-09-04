@@ -67,6 +67,7 @@
       inherit pkgs;
 
       extraSpecialArgs = {
+        inherit inputs;
 	isNixOS   = false;
 	isDesktop = false;
         isDroid   = true;

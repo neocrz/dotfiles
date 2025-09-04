@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
-
+{ config, lib, pkgs, inputs, ... }:
+let
+  modulesPath = ../../common/home;
+  modulesList = [
+    "apps.nix"
+    "git.nix"
+  ];
+  modulesPathList = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
+in
 {
-  # Read the changelog before changing this value
   home.stateVersion = "24.05";
-
-  # insert home-manager config
+  
+  imports = modulesPathList;
 }
