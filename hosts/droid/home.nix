@@ -5,7 +5,7 @@ let
     "apps.nix"
     "git.nix"
   ];
-  modulesPathList = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
+  modulesPathList = map (mod: modulesPath + mod) (map (mod: "/" + mod) modulesList);
 in
 {
   home.stateVersion = "24.05";

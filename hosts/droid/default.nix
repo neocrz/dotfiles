@@ -4,7 +4,7 @@ let
   modulesList = [
     "apps.nix"
   ];
-  modulesPathList = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
+  modulesPathList = map (mod: modulesPath + mod) (map (mod: "/" + mod) modulesList);
 in
 {
   imports = modulesPathList;
