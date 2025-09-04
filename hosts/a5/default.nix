@@ -10,6 +10,7 @@ in
 { 
   nix.settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   imports =
     [ 

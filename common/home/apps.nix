@@ -1,16 +1,20 @@
 { config, pkgs, isNixOS, isDroid, isDesktop,...}: 
 let
   commonApps = with pkgs; [ ] ++ (with pkgs.unstable; [
+    # repl
     (writeShellScriptBin "my-nix-fast-repl" ''
       #!${bash}/bin/bash
       cd "${toString ../..}"
       
       nix repl --file repl.nix "$@"
     '')
-    tmux
+    # Apps
+    btop
     fastfetch
     gh
     neovim
+    tmux
+    yazi
   ]);
   
   # mostly GUI
