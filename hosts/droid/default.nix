@@ -25,7 +25,7 @@ in
     config = ./home.nix;
     backupFileExtension = "hm-bak";
     useGlobalPkgs = true;
-    extraSpecialArts = {
+    extraSpecialArgs = {
       inherit inputs isNixOS isDesktop isDroid;
     };
   };
