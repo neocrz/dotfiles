@@ -7,7 +7,7 @@ let
   modulesPathList = map (mod: modulesPath + mod) (map (mod: "/" + mod) modulesList);
 in
 {
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.registry.pinned-nixpkgs.flake = inputs.nixpkgs.outPath;
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
   nix.extraOptions = ''
      experimental-features = nix-command flakes pipe-operators
