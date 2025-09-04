@@ -1,4 +1,4 @@
-{ config, lib, pkgs, isNixOS, isDesktop, isDroid, ... }:
+{ config, lib, pkgs, inputs, isNixOS, isDesktop, isDroid, ... }:
 let
   modulesPath = ../../common/system;
   modulesList = [
