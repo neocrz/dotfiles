@@ -40,7 +40,12 @@
         system = "x86_64-linux";
         pkgs = mkPkgs {inherit system;};
       in nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+        specialArgs = { 
+	  inherit inputs; 
+	  isNixOS   = true;
+	  isDesktop = true;
+	  isDroid   = false;
+	};
   
         modules = [ 
           {
@@ -60,6 +65,13 @@
     in
     nix-on-droid.lib.nixOnDroidConfiguration {
       inherit pkgs;
+
+      extraSpecialArgs = {
+	isNixOS   = false;
+	isDesktop = false;
+        isDroid   = true;
+      };
+
       modules = [
         ./hosts/droid
       ];
