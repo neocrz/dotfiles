@@ -8,6 +8,10 @@ let
 in
 {
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
+  nix.extraOptions = ''
+     experimental-features = nix-command flakes pipe-operators
+  '';
 
   imports = modulesPathList;
 
@@ -17,10 +21,7 @@ in
 
   system.stateVersion = "24.05";
 
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes pipe-operators
-  '';
-
+  
   time.timeZone = "America/Sao_Paulo";
 
   home-manager = {

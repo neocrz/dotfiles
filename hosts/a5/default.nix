@@ -9,9 +9,8 @@ let
 in
 { 
   nix.settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
-
   imports =
     [ 
       ./hardware.nix
