@@ -1,6 +1,12 @@
 { config, pkgs, isNixOS, isDroid, isDesktop,...}: 
 let
   commonApps = with pkgs; [ ] ++ (with pkgs.unstable; [
+    (writeShellScriptBin "my-nix-fast-repl" ''
+      #!${bash}/bin/bash
+      cd "${toString ../..}"
+      
+      nix repl --file repl.nix "$@"
+    '')
     tmux
     fastfetch
     gh

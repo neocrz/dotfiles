@@ -106,19 +106,7 @@ in
   };
 
 
-environment.systemPackages = let
-    repl_path = toString ../..;
-    my-nix-fast-repl = pkgs.writeShellScriptBin "my-nix-fast-repl" ''
-    #!${pkgs.bash}/bin/bash
-    cd "${toString ../..}"
-    nix repl --file repl.nix "$@"
-    '';
-  in [
-    my-nix-fast-repl
-  ] ++ (with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ]);
+environment.systemPackages = with pkgs; [ ];
 
   services.blueman.enable = true;
   hardware.bluetooth = {
