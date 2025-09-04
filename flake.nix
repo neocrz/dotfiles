@@ -17,37 +17,39 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs: 
+  let
+    unstableOverlay = system: final: prev: {
+      unstable = import nixpkgs-unstable {
+        inherit prev;
+        inherit system;
+	config.allowUnfree = true;
+      };
+    };
+
+    mkPkgs = system: import nixpkgs {
+      inherit system;
+      overlays = [ (unstableOverlay system) ];
+      config.allowUnfree = true;
+    };
+  in
+  {
     
     nixosConfigurations = {
-    a5 = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
-
-      modules = [ 
-        {
-            nixpkgs.overlays = [
-              (final: prev: {
-                unstable = import nixpkgs-unstable {
-
-                  inherit prev;
-                  system = prev.system;
-                  config.allowUnfree = true;
-                };
-              })
-            ];
-        }
-        ./configuration.nix
-        inputs.home-manager.nixosModules.home-manager
+      a5 = let
+        system = "x86_64-linux";
+        pkgs = mkPkgs system;
+      in nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+  
+        modules = [ 
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users."eee" = ./home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
+            nixpkgs.overlays = [ (unstableOverlay system) ];
+  	    nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
           }
-      ];
-    };
+          ./hosts/a5
+        ];
+      };
     };
   };
 }

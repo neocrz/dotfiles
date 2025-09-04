@@ -10,7 +10,14 @@ let hostName = "a5"; in
 
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./hardware.nix
+      inputs.home-manager.nixosModules.home-manager
+	{
+	  home-manager.useGlobalPkgs = true;
+	  home-manager.useUserPackages = true;
+	  home-manager.users."eee" = ./home.nix;
+          home-manager.extraSpecialArgs = {inherit inputs;};
+	}
     ];
 
   # Bootloader.
@@ -96,13 +103,8 @@ let hostName = "a5"; in
   # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = let
-    repl_path = toString ./.;
+environment.systemPackages = let
+    repl_path = toString ../..;
     my-nix-fast-repl = pkgs.writeShellScriptBin "my-nix-fast-repl" ''
     source /etc/set-environment
     nix repl "${repl_path}/repl.nix" "$@"

@@ -1,6 +1,6 @@
 { config, pkgs, inputs, ... }:
 let
-  modulesPath = ./modules;
+  modulesPath = ../../common/home;
   modulesList = [
     "git.nix"
     "apps.nix"
