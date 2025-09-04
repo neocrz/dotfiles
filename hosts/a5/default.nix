@@ -109,8 +109,9 @@ in
 environment.systemPackages = let
     repl_path = toString ../..;
     my-nix-fast-repl = pkgs.writeShellScriptBin "my-nix-fast-repl" ''
-    source /etc/set-environment
-    nix repl "${repl_path}/repl.nix" "$@"
+    #!${pkgs.bash}/bin/bash
+    cd "${toString ../..}"
+    nix repl --file repl.nix "$@"
     '';
   in [
     my-nix-fast-repl
