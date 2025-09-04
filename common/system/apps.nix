@@ -10,6 +10,7 @@ let
   ];
 
   droidApps = with pkgs; [
+    openssh
     procps
     killall
     utillinux
