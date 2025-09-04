@@ -17,7 +17,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-unstable, nix-on-droid, home-manager, ... }@inputs: 
   let
     unstableOverlay = system: final: prev: {
       unstable = import nixpkgs-unstable {
@@ -27,9 +27,9 @@
       };
     };
 
-    mkPkgs = system: import nixpkgs {
+    mkPkgs = {system, o ? []}: import nixpkgs {
       inherit system;
-      overlays = [ (unstableOverlay system) ];
+      overlays = [ (unstableOverlay system) ] ++ o;
       config.allowUnfree = true;
     };
   in
@@ -38,7 +38,7 @@
     nixosConfigurations = {
       a5 = let
         system = "x86_64-linux";
-        pkgs = mkPkgs system;
+        pkgs = mkPkgs {inherit system;};
       in nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
   
@@ -50,6 +50,20 @@
           ./hosts/a5
         ];
       };
+    };
+    nixOnDroidConfigurations.default = let
+      system = "aarch64-linux";
+      pkgs = mkPkgs {
+        inherit system;
+        o=[ nix-on-droid.overlays.default ];
+      };
+    in
+    nix-on-droid.lib.nixOnDroidConfiguration {
+      inherit pkgs;
+      modules = [
+        ./hosts/droid
+      ];
+      home-manager-path = home-manager.outPath;
     };
   };
 }
