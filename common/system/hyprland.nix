@@ -4,7 +4,7 @@
 lib.mkIf isDesktop {
   programs.hyprland = {
     enable = true;
-    withUWSM = true;
+    withUWSM = false; # true - broke 
     xwayland.enable = true; # Needed for X11 applications
   };
 
@@ -18,7 +18,7 @@ lib.mkIf isDesktop {
     extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
   };
 
-  # Hint Electron apps to use Wayland, as per the NixOS Wiki.
+  # Hint Electron apps to use Wayland, as NixOS Wiki.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   environment.systemPackages = with pkgs; [
@@ -51,7 +51,7 @@ lib.mkIf isDesktop {
       gtk.enable = true;
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Classic";
-      size = 24;
+      size = 18;
     };
 
     gtk = {
@@ -84,7 +84,7 @@ lib.mkIf isDesktop {
         ];
 
         # Basic settings
-        # monitor = ",preferred,auto,1";
+        monitor = ",preferred,auto,1";
         input = {
           kb_layout = "br";
           follow_mouse = 1;
@@ -102,14 +102,24 @@ lib.mkIf isDesktop {
 
         # Keybinds
         bind = [
-          "$mod, T, exec, kitty"
-          "$mod, Q, killactive,"
-          "$mod, M, exit,"
+           # --- Apps & Launchers ---
+          "$mod, T, exec, ghostty"
           "$mod, E, exec, yazi"
           "$mod, O, exec, obsidian"
-          "$mod, SPACE, exec, rofi --show drun"
-          "$mod, R, exec, rofi --show run"
-          "$mod SHIFT, S, exec, grim -g \"$(slurp)\""
+          "$mod, B, exec, floorp"
+          "$mod, SPACE, exec, rofi -show drun"
+          "$mod, R, exec, rofi -show run"
+
+          # --- Window Management ---
+          "$mod, Q, killactive,"
+
+          # --- Session Management ---
+          "$mod, L, exec, hyprlock"        # Lock the screen
+          "$mod SHIFT, E, exec, wlogout"   # Show the logout menu
+          "$mod CTRL, Q, exit,"            # Exit Hyprland
+
+          # --- Utilities ---
+          "$mod SHIFT, S, exec, grim -g \"$(slurp)\"" # Screenshot a region
         ] ++ (
           # Workspaces
           # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
