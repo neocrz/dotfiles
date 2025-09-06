@@ -1,32 +1,46 @@
-{ config, pkgs, isNixOS, isDroid, isDesktop,...}: 
-let
-  commonApps = with pkgs; [ ] ++ (with pkgs.unstable; [
-    # repl
-    (writeShellScriptBin "my-nix-fast-repl" ''
-      #!${bash}/bin/bash
-      cd "${toString ../..}"
-      
-      nix repl --file repl.nix "$@"
-    '')
-    # Apps
-    btop
-    fastfetch
-    gh
-    neovim
-    tmux
-    yazi
-  ]);
-  
+{
+  config,
+  pkgs,
+  isNixOS,
+  isDroid,
+  isDesktop,
+  ...
+}: let
+  commonApps = 
+    (with pkgs; []) ++
+    (with pkgs.unstable; [
+      # dotfiles flake REPL
+      (writeShellScriptBin "my-nix-fast-repl" ''
+        #!${bash}/bin/bash
+        cd "${toString ../..}"
+
+        nix repl --file repl.nix "$@"
+      '')
+      # Apps
+      btop
+      direnv
+      fastfetch
+      gh
+      neovim
+      tmux
+      yazi
+    ]) ++
+    (with pkgs.mypkgs.local; [
+      my-echo
+    ]);
+
   # mostly GUI
-  desktopApps = with pkgs; [ ] ++ (with pkgs.unstable; [
-    bitwarden-desktop
-    floorp
-    ghostty
-    obsidian
-  ]);
+  desktopApps = with pkgs;
+    []
+    ++ (with pkgs.unstable; [
+      bitwarden-desktop
+      floorp
+      ghostty
+      obsidian
+    ]);
   # Specifics
-  nixOSApps = with pkgs; [ ];
-  droidApps = with pkgs; [ 
+  nixOSApps = with pkgs; [];
+  droidApps = with pkgs; [
     diffutils
     findutils
     gnugrep
@@ -39,10 +53,23 @@ let
     zip
     unzip
   ];
-in
-{
-  home.packages = commonApps ++
-    (if isDesktop then desktopApps else []) ++
-    (if isNixOS then nixOSApps else []) ++
-    (if isDroid then droidApps else []);
+in {
+  
+  home.packages =
+    commonApps
+    ++ (
+      if isDesktop
+      then desktopApps
+      else []
+    )
+    ++ (
+      if isNixOS
+      then nixOSApps
+      else []
+    )
+    ++ (
+      if isDroid
+      then droidApps
+      else []
+    );
 }

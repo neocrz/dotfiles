@@ -4,7 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    
+    my-nixpkgs.url = "github:neocrz/my-nixpkgs";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +18,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nix-on-droid, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-unstable, my-nixpkgs, nix-on-droid, home-manager, ... }@inputs: 
   let
     unstableOverlay = system: final: prev: {
       unstable = import nixpkgs-unstable {
@@ -27,9 +28,17 @@
       };
     };
 
+    myPkgsOverlay = final: prev: {
+      mypkgs = my-nixpkgs.overlays.default final prev;
+    };
+
+
     mkPkgs = {system, o ? []}: import nixpkgs {
       inherit system;
-      overlays = [ (unstableOverlay system) ] ++ o;
+      overlays = [ 
+        (unstableOverlay system) 
+	(myPkgsOverlay)
+      ] ++ o;
       config.allowUnfree = true;
     };
   in
@@ -49,7 +58,10 @@
   
         modules = [ 
           {
-            nixpkgs.overlays = [ (unstableOverlay system) ];
+            nixpkgs.overlays = [
+	      (unstableOverlay system)
+	      (myPkgsOverlay)
+	    ];
   	    nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
           }
           ./hosts/a5
