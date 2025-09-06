@@ -21,11 +21,12 @@
       direnv
       fastfetch
       gh
-      neovim
       tmux
       yazi
     ]) ++
     (with pkgs.mypkgs.local; [
+      # MY PKGS
+      my-nvf
       my-echo
     ]);
 

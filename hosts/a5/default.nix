@@ -5,7 +5,13 @@ let
   modulesList = [
     "apps.nix"
   ];
-  modulesPathList = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
+  modulesPathListCommon = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
+in let
+  modulesPath = ./modules;
+  modulesList = [ "hybrid.nix" ];
+  modulesPathListThis = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
+in let
+  modulesPathList = modulesPathListCommon ++ modulesPathListThis;
 in
 { 
   nix.settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
