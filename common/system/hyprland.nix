@@ -2,6 +2,7 @@
 
 # module is activated only if `isDesktop` is true
 lib.mkIf isDesktop {
+  
   programs.hyprland = {
     enable = true;
     withUWSM = false; # true - broke 
@@ -24,9 +25,13 @@ lib.mkIf isDesktop {
   environment.systemPackages = with pkgs; [
     kitty
   ];
+  
+  # Unicode
+  fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ]; 
 
+  
   home-manager.users."eee" = {
-
+    imports = [ ../home/waybar.nix ];
     home.packages = with pkgs; [
       # Hyprland Ecosystem
       hyprpaper       # Wallpaper utility
@@ -38,7 +43,6 @@ lib.mkIf isDesktop {
 
       # Essential Wayland tools
       dunst           # Notification daemon
-      waybar          # Status bar
       wlogout         # Logout menu
       wl-clipboard    # Clipboard tool
       grim            # Screenshot tool
@@ -47,6 +51,7 @@ lib.mkIf isDesktop {
     ];
 
     # -- THEME SUPPORT --
+   
     home.pointerCursor = {
       gtk.enable = true;
       package = pkgs.bibata-cursors;
@@ -131,11 +136,17 @@ lib.mkIf isDesktop {
             ]
           ) 9)
         );
-
+        # --- Mouse bindings ---
         bindm = [
           "$mod, mouse:272, movewindow"
           "$mod, mouse:273, resizewindow"
         ];
+        bindel = [
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ];
+        
       };
     };
   };
