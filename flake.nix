@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    my-nixpkgs.url = "github:neocrz/my-nixpkgs";
+    nixpkgs-neocrz.url = "github:neocrz/my-nixpkgs";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -18,7 +18,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, my-nixpkgs, nix-on-droid, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-neocrz, nix-on-droid, home-manager, ... }@inputs: 
   let
     unstableOverlay = system: final: prev: {
       unstable = import nixpkgs-unstable {
@@ -29,7 +29,7 @@
     };
 
     myPkgsOverlay = final: prev: {
-      mypkgs = my-nixpkgs.overlays.default final prev;
+      neocrz = nixpkgs-neocrz.overlays.default final prev;
     };
 
 

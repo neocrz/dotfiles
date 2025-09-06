@@ -24,9 +24,9 @@
       tmux
       yazi
     ]) ++
-    (with pkgs.mypkgs.local; [
+    (with pkgs.neocrz; [
       # MY PKGS
-      my-nvf
+      nvf
       my-echo
     ]);
 
