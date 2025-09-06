@@ -4,6 +4,7 @@ let
   modulesPath = ../../common/system;
   modulesList = [
     "apps.nix"
+    "hyprland.nix"
   ];
   modulesPathListCommon = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
 in let

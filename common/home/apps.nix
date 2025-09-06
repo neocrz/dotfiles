@@ -18,7 +18,6 @@
       '')
       # Apps
       btop
-      direnv
       fastfetch
       gh
       tmux
@@ -55,6 +54,11 @@
     unzip
   ];
 in {
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
+  };
   
   home.packages =
     commonApps

@@ -1,0 +1,132 @@
+{ pkgs, lib, isDesktop, ... }:
+
+# module is activated only if `isDesktop` is true
+lib.mkIf isDesktop {
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true; # Needed for X11 applications
+  };
+
+  # PipeWire
+  services.pipewire.enable = true;
+  security.rtkit.enable = true;
+
+  # Enable the portal for screensharing, as per the NixOS Wiki.
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
+
+  # Hint Electron apps to use Wayland, as per the NixOS Wiki.
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  environment.systemPackages = with pkgs; [
+    kitty
+  ];
+
+  home-manager.users."eee" = {
+
+    home.packages = with pkgs; [
+      # Hyprland Ecosystem
+      hyprpaper       # Wallpaper utility
+      hyprlock        # Screen locker
+      hypridle        # Idle daemon 
+      hyprpicker      # Color Picker
+      hyprpolkitagent # Polkit authentication
+      hyprsysteminfo  # System Info GUI
+
+      # Essential Wayland tools
+      dunst           # Notification daemon
+      waybar          # Status bar
+      wlogout         # Logout menu
+      wl-clipboard    # Clipboard tool
+      grim            # Screenshot tool
+      slurp           # For selecting a screen region with grim
+      rofi            # Laucher
+    ];
+
+    # -- THEME SUPPORT --
+    home.pointerCursor = {
+      gtk.enable = true;
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Classic";
+      size = 24;
+    };
+
+    gtk = {
+      enable = true;
+      theme = {
+        package = pkgs.flat-remix-gtk;
+        name = "Flat-Remix-GTK-Grey-Darkest";
+      };
+      iconTheme = {
+        package = pkgs.adwaita-icon-theme;
+        name = "Adwaita";
+      };
+      font = {
+        name = "Sans";
+        size = 11;
+      };
+    };
+
+    # -- HYPRLAND CONFIGURATION --
+    wayland.windowManager.hyprland = {
+      enable = true;
+      settings = {
+        # SUPER key
+        "$mod" = "SUPER";
+
+        # Startup commands
+        exec-once = [
+          "waybar"
+          "hyprpaper"
+        ];
+
+        # Basic settings
+        # monitor = ",preferred,auto,1";
+        input = {
+          kb_layout = "br";
+          follow_mouse = 1;
+        };
+        general = {
+          gaps_in = 5;
+          gaps_out = 10;
+          border_size = 2;
+          "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+          "col.inactive_border" = "rgba(595959aa)";
+        };
+        decoration = {
+          rounding = 10;
+        };
+
+        # Keybinds
+        bind = [
+          "$mod, T, exec, kitty"
+          "$mod, Q, killactive,"
+          "$mod, M, exit,"
+          "$mod, E, exec, yazi"
+          "$mod, O, exec, obsidian"
+          "$mod, SPACE, exec, rofi --show drun"
+          "$mod, R, exec, rofi --show run"
+          "$mod SHIFT, S, exec, grim -g \"$(slurp)\""
+        ] ++ (
+          # Workspaces
+          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+          builtins.concatLists (builtins.genList (i:
+            let ws = i + 1;
+            in [
+              "$mod, code:1${toString i}, workspace, ${toString ws}"
+              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+            ]
+          ) 9)
+        );
+
+        bindm = [
+          "$mod, mouse:272, movewindow"
+          "$mod, mouse:273, resizewindow"
+        ];
+      };
+    };
+  };
+}
