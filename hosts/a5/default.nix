@@ -1,24 +1,35 @@
-{ config, pkgs, inputs, isNixOS, isDesktop, isDroid, ... }:
-let
+{ pkgs, inputs, isNixOS, isDesktop, isDroid, ... }:
+let # Common sys modules
+
   hostName = "a5";
   modulesPath = ../../common/system;
   modulesList = [
     "apps.nix"
     "hyprland.nix"
+    "steam.nix"
   ];
   modulesPathListCommon = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
-in let
+
+in let # This host modules
+
   modulesPath = ./modules;
   modulesList = [ "hybrid.nix" ];
   modulesPathListThis = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
-in let
+
   modulesPathList = modulesPathListCommon ++ modulesPathListThis;
 in
 { 
-  nix.settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
-  nix.registry.pinned-nixpkgs.flake = inputs.nixpkgs;
-  imports =
+  nix = {
+    settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
+    nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
+    registry.pinned-nixpkgs.flake = inputs.nixpkgs;
+    gc = {
+      automatic = true;
+      dates = "weekly"; # Or "daily", "monthly", etc.
+      options = "--delete-generations +10";
+    };
+  };
+    imports =
     [ 
       ./hardware.nix
 

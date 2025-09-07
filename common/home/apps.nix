@@ -37,7 +37,9 @@
       floorp
       ghostty
       obsidian
+      vesktop
     ]);
+
   # Specifics
   nixOSApps = with pkgs; [];
   droidApps = with pkgs; [
