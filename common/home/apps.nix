@@ -35,6 +35,7 @@
     ++ (with pkgs.unstable; [
       bitwarden-desktop
       floorp
+      foliate
       ghostty
       obsidian
       vesktop

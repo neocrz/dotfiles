@@ -117,11 +117,19 @@ lib.mkIf isDesktop {
 
           # --- Window Management ---
           "$mod, Q, killactive,"
+          "$mod, F, togglefloating,"
+          "$mod, F11, fullscreen,"
+          
+          # --- Focus ---
+          "$mod, left, movefocus, l"
+          "$mod, right, movefocus, r"
+          "$mod, up, movefocus, u"
+          "$mod, down, movefocus, d"
 
           # --- Session Management ---
           "$mod, L, exec, hyprlock"        # Lock the screen
           "$mod SHIFT, E, exec, wlogout"   # Show the logout menu
-          "$mod CTRL, Q, exit,"            # Exit Hyprland
+          "$mod CTRL, Q, exit,"          # Exit Hyprland
 
           # --- Utilities ---
           "$mod SHIFT, S, exec, grim -g \"$(slurp)\"" # Screenshot a region
