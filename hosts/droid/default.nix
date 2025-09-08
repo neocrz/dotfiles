@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, isNixOS, isDesktop, isDroid, ... }:
+{ inputs, isNixOS, isDesktop, isDroid, ... }:
 let
   modulesPath = ../../common/system;
   modulesList = [
@@ -8,7 +8,8 @@ let
 in
 {
   android-integration.termux-setup-storage.enable = true;
-  nix.registry.pinned-nixpkgs.flake = inputs.nixpkgs;
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
   nix.extraOptions = ''
      experimental-features = nix-command flakes pipe-operators
@@ -16,7 +17,7 @@ in
 
   imports = modulesPathList;
 
-  environment.packages = with pkgs; [ ];
+  # environment.packages = with pkgs; [ ];
 
   environment.etcBackupExtension = ".bak";
 

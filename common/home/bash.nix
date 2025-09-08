@@ -1,5 +1,10 @@
-{ config, pkgs, ...}: {
+{ ... }: {
   home.shellAliases = {
-    g = "git"
+    g = "git";
+  };
+
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
   };
 }

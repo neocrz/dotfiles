@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   isNixOS,
   isDroid,
@@ -17,6 +16,7 @@
         nix repl --file repl.nix "$@"
       '')
       # Apps
+      bat
       btop
       fastfetch
       gh
@@ -30,12 +30,11 @@
     ]);
 
   # mostly GUI
-  desktopApps = with pkgs;
-    []
-    ++ (with pkgs.unstable; [
+  desktopApps = (with pkgs.unstable; [
       bitwarden-desktop
       floorp
       foliate
+      godot
       ghostty
       obsidian
       vesktop

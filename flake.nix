@@ -24,7 +24,7 @@
       unstable = import nixpkgs-unstable {
         inherit prev;
         inherit system;
-	config.allowUnfree = true;
+	      config.allowUnfree = true;
       };
     };
 
@@ -37,9 +37,10 @@
       inherit system;
       overlays = [ 
         (unstableOverlay system) 
-	(myPkgsOverlay)
+        (myPkgsOverlay)
       ] ++ o;
       config.allowUnfree = true;
+      android_sdk.accept_license = true;
     };
   in
   {
@@ -50,19 +51,20 @@
         pkgs = mkPkgs {inherit system;};
       in nixpkgs.lib.nixosSystem {
         specialArgs = { 
-	  inherit inputs; 
-	  isNixOS   = true;
-	  isDesktop = true;
-	  isDroid   = false;
-	};
+          inherit inputs; 
+          isNixOS   = true;
+          isDesktop = true;
+          isDroid   = false;
+        };
   
         modules = [ 
           {
             nixpkgs.overlays = [
-	      (unstableOverlay system)
-	      (myPkgsOverlay)
-	    ];
-  	    nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
+              (unstableOverlay system)
+              (myPkgsOverlay)
+            ];
+            nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
+            nixpkgs.config.android_sdk.accept_license = true;
           }
           ./hosts/a5
         ];

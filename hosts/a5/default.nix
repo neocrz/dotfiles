@@ -22,7 +22,8 @@ in
   nix = {
     settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
     nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
-    registry.pinned-nixpkgs.flake = inputs.nixpkgs;
+    registry.nixpkgs.flake = inputs.nixpkgs;
+    registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
     gc = {
       automatic = true;
       dates = "weekly"; # Or "daily", "monthly", etc.

@@ -2,8 +2,8 @@
 let
   modulesPath = ../../common/home;
   modulesList = [
-    "git.nix"
     "apps.nix"
+    "git.nix"
     "services.nix"
   ];
   modulesPathList = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList; 
