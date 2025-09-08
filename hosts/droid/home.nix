@@ -3,6 +3,7 @@ let
   modulesPath = ../../common/home;
   modulesList = [
     "apps.nix"
+    "bash.nix"
     "git.nix"
   ];
   modulesPathList = map (mod: modulesPath + mod) (map (mod: "/" + mod) modulesList);

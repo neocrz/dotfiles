@@ -3,6 +3,7 @@ let
   modulesPath = ../../common/home;
   modulesList = [
     "apps.nix"
+    "bash.nix"
     "git.nix"
     "services.nix"
   ];

@@ -15,7 +15,7 @@
 
         nix repl --file repl.nix "$@"
       '')
-      # Apps
+        # Apps
       bat
       btop
       fastfetch
