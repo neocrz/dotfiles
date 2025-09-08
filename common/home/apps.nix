@@ -5,17 +5,17 @@
   isDesktop,
   ...
 }: let
-  commonApps = 
-    (with pkgs; []) ++
-    (with pkgs.unstable; [
-      # dotfiles flake REPL
-      (writeShellScriptBin "my-nix-fast-repl" ''
-        #!${bash}/bin/bash
-        cd "${toString ../..}"
+  my-nix-fast-repl = pkgs.writeShellScriptBin "my-nix-fast-repl" ''
+    #!/usr/bin/env bash
+    cd "${toString ../..}"
 
-        nix repl --file repl.nix "$@"
-      '')
-        # Apps
+    nix repl --file repl.nix "$@"
+  '';
+
+  commonApps = 
+    (with pkgs.unstable; [
+      my-nix-fast-repl
+      # Apps
       bat
       btop
       fastfetch
