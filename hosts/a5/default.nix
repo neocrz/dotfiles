@@ -6,7 +6,7 @@ let # Common sys modules
   modulesList = [
     "apps.nix"
     "hyprland.nix"
-    "steam.nix"
+    "games.nix"
   ];
   modulesPathListCommon = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
 
@@ -97,6 +97,7 @@ in
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
+
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

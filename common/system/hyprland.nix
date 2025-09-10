@@ -86,6 +86,7 @@ lib.mkIf isDesktop {
         exec-once = [
           "waybar"
           "hyprpaper"
+          "syncthing"
         ];
 
         # Basic settings

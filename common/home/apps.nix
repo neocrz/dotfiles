@@ -18,10 +18,17 @@
       # Apps
       bat
       btop
+      bzip2
       fastfetch
+      gnutar
       gh
+      gzip
+      p7zip
+      unzip
       tmux
+      xz
       yazi
+      zip
     ]) ++
     (with pkgs.neocrz; [
       # MY PKGS
@@ -48,12 +55,7 @@
     gnugrep
     gnupg
     gnused
-    gnutar
-    bzip2
-    gzip
-    xz
-    zip
-    unzip
+
   ];
 in {
   programs.direnv = {
