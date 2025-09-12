@@ -1,6 +1,12 @@
-{ pkgs, inputs, isNixOS, isDesktop, isDroid, ... }:
-let # Common sys modules
-
+{
+  pkgs,
+  inputs,
+  isNixOS,
+  isDesktop,
+  isDroid,
+  ...
+}: let
+  # Common sys modules
   hostName = "a5";
   modulesPath = ../../common/system;
   modulesList = [
@@ -9,19 +15,17 @@ let # Common sys modules
     "games.nix"
   ];
   modulesPathListCommon = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
-
-in let # This host modules
-
+in let
+  # This host modules
   modulesPath = ./modules;
-  modulesList = [ "hybrid.nix" ];
+  modulesList = ["hybrid.nix"];
   modulesPathListThis = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
 
   modulesPathList = modulesPathListCommon ++ modulesPathListThis;
-in
-{ 
+in {
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" "pipe-operators"];
-    nixPath = [ "nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}" ];
+    settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
+    nixPath = ["nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}"];
     registry.nixpkgs.flake = inputs.nixpkgs;
     registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
     gc = {
@@ -30,19 +34,19 @@ in
       options = "--delete-generations +10";
     };
   };
-    imports =
-    [ 
+  imports =
+    [
       ./hardware.nix
 
       inputs.home-manager.nixosModules.home-manager
-	{
-	  home-manager.useGlobalPkgs = true;
-	  home-manager.useUserPackages = true;
-	  home-manager.users."eee" = ./home.nix;
-          home-manager.extraSpecialArgs = {inherit inputs isNixOS isDesktop isDroid;};
-	}
-    ] ++ 
-    modulesPathList;
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users."eee" = ./home.nix;
+        home-manager.extraSpecialArgs = {inherit inputs isNixOS isDesktop isDroid;};
+      }
+    ]
+    ++ modulesPathList;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -119,14 +123,13 @@ in
   users.users.eee = {
     isNormalUser = true;
     description = "eee";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
-
-environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [];
 
   services.blueman.enable = true;
   hardware.bluetooth = {
@@ -134,11 +137,11 @@ environment.systemPackages = with pkgs; [ ];
     powerOnBoot = true; # Power on Bluetooth at boot
     settings = {
       General = {
-	Experimental = true; # Enable battery level display
-	FastConnectable = true; # Faster device connections
+        Experimental = true; # Enable battery level display
+        FastConnectable = true; # Faster device connections
       };
       Policy = {
-	AutoEnable = true; # Automatically enable controllers
+        AutoEnable = true; # Automatically enable controllers
       };
     };
   };
@@ -169,5 +172,4 @@ environment.systemPackages = with pkgs; [ ];
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }

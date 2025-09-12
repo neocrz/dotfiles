@@ -4,7 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-neocrz.url = "github:neocrz/my-nixpkgs";
+    nixpkgs-neocrz = {
+      url = "github:neocrz/my-nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -18,13 +21,20 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-neocrz, nix-on-droid, home-manager, ... }@inputs: 
-  let
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    nixpkgs-neocrz,
+    nix-on-droid,
+    home-manager,
+    ...
+  } @ inputs: let
     unstableOverlay = system: final: prev: {
       unstable = import nixpkgs-unstable {
         inherit prev;
         inherit system;
-	      config.allowUnfree = true;
+        config.allowUnfree = true;
       };
     };
 
@@ -32,65 +42,69 @@
       neocrz = nixpkgs-neocrz.overlays.default final prev;
     };
 
-
-    mkPkgs = {system, o ? []}: import nixpkgs {
-      inherit system;
-      overlays = [ 
-        (unstableOverlay system) 
-        (myPkgsOverlay)
-      ] ++ o;
-      config.allowUnfree = true;
-      android_sdk.accept_license = true;
-    };
-  in
-  {
-    
+    mkPkgs = {
+      system,
+      o ? [],
+    }:
+      import nixpkgs {
+        inherit system;
+        overlays =
+          [
+            (unstableOverlay system)
+            myPkgsOverlay
+          ]
+          ++ o;
+        config.allowUnfree = true;
+        android_sdk.accept_license = true;
+      };
+  in {
     nixosConfigurations = {
       a5 = let
         system = "x86_64-linux";
         pkgs = mkPkgs {inherit system;};
-      in nixpkgs.lib.nixosSystem {
-        specialArgs = { 
-          inherit inputs; 
-          isNixOS   = true;
-          isDesktop = true;
-          isDroid   = false;
+      in
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+            isNixOS = true;
+            isDesktop = true;
+            isDroid = false;
+          };
+
+          modules = [
+            {
+              nixpkgs.overlays = [
+                (unstableOverlay system)
+                myPkgsOverlay
+              ];
+              nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
+              nixpkgs.config.android_sdk.accept_license = true;
+            }
+            ./hosts/a5
+          ];
         };
-  
-        modules = [ 
-          {
-            nixpkgs.overlays = [
-              (unstableOverlay system)
-              (myPkgsOverlay)
-            ];
-            nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
-            nixpkgs.config.android_sdk.accept_license = true;
-          }
-          ./hosts/a5
-        ];
-      };
     };
     nixOnDroidConfigurations.default = let
       system = "aarch64-linux";
       pkgs = mkPkgs {
         inherit system;
-        o=[ nix-on-droid.overlays.default ];
+        o = [nix-on-droid.overlays.default];
       };
     in
-    nix-on-droid.lib.nixOnDroidConfiguration {
-      inherit pkgs;
+      nix-on-droid.lib.nixOnDroidConfiguration {
+        inherit pkgs;
 
-      extraSpecialArgs = {
-        inherit inputs;
-	isNixOS   = false;
-	isDesktop = false;
-        isDroid   = true;
+        extraSpecialArgs = {
+          inherit inputs;
+          isNixOS = false;
+          isDesktop = false;
+          isDroid = true;
+        };
+
+        modules = [
+          ./hosts/droid
+        ];
+        home-manager-path = home-manager.outPath;
       };
-
-      modules = [
-        ./hosts/droid
-      ];
-      home-manager-path = home-manager.outPath;
-    };
   };
 }

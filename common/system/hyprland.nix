@@ -1,11 +1,14 @@
-{ pkgs, lib, isDesktop, ... }:
-
+{
+  pkgs,
+  lib,
+  isDesktop,
+  ...
+}:
 # module is activated only if `isDesktop` is true
 lib.mkIf isDesktop {
-  
   programs.hyprland = {
     enable = true;
-    withUWSM = false; # true - broke 
+    withUWSM = false; # true - broke
     xwayland.enable = true; # Needed for X11 applications
   };
 
@@ -16,7 +19,7 @@ lib.mkIf isDesktop {
   # Enable the portal for screensharing, as per the NixOS Wiki.
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    extraPortals = [pkgs.xdg-desktop-portal-hyprland];
   };
 
   # Hint Electron apps to use Wayland, as NixOS Wiki.
@@ -24,34 +27,34 @@ lib.mkIf isDesktop {
 
   environment.systemPackages = with pkgs; [
     kitty
+    wl-clipboard
   ];
-  
-  # Unicode
-  fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ]; 
 
-  
+  # Unicode
+  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono];
+
   home-manager.users."eee" = {
-    imports = [ ../home/waybar.nix ];
+    imports = [../home/waybar.nix];
     home.packages = with pkgs; [
       # Hyprland Ecosystem
-      hyprpaper       # Wallpaper utility
-      hyprlock        # Screen locker
-      hypridle        # Idle daemon 
-      hyprpicker      # Color Picker
+      hyprpaper # Wallpaper utility
+      hyprlock # Screen locker
+      hypridle # Idle daemon
+      hyprpicker # Color Picker
       hyprpolkitagent # Polkit authentication
-      hyprsysteminfo  # System Info GUI
+      hyprsysteminfo # System Info GUI
 
       # Essential Wayland tools
-      dunst           # Notification daemon
-      wlogout         # Logout menu
-      wl-clipboard    # Clipboard tool
-      grim            # Screenshot tool
-      slurp           # For selecting a screen region with grim
-      rofi            # Laucher
+      dunst # Notification daemon
+      wlogout # Logout menu
+      wl-clipboard # Clipboard tool
+      grim # Screenshot tool
+      slurp # For selecting a screen region with grim
+      rofi # Laucher
     ];
 
     # -- THEME SUPPORT --
-   
+
     home.pointerCursor = {
       gtk.enable = true;
       package = pkgs.bibata-cursors;
@@ -107,44 +110,48 @@ lib.mkIf isDesktop {
         };
 
         # Keybinds
-        bind = [
-           # --- Apps & Launchers ---
-          "$mod, T, exec, ghostty"
-          "$mod, E, exec, yazi"
-          "$mod, O, exec, obsidian"
-          "$mod, B, exec, floorp"
-          "$mod, SPACE, exec, rofi -show drun"
-          "$mod, R, exec, rofi -show run"
+        bind =
+          [
+            # --- Apps & Launchers ---
+            "$mod, T, exec, ghostty"
+            "$mod, E, exec, yazi"
+            "$mod, O, exec, obsidian"
+            "$mod, B, exec, floorp"
+            "$mod, SPACE, exec, rofi -show drun"
+            "$mod, R, exec, rofi -show run"
 
-          # --- Window Management ---
-          "$mod, Q, killactive,"
-          "$mod, F, togglefloating,"
-          "$mod, F11, fullscreen,"
-          
-          # --- Focus ---
-          "$mod, left, movefocus, l"
-          "$mod, right, movefocus, r"
-          "$mod, up, movefocus, u"
-          "$mod, down, movefocus, d"
+            # --- Window Management ---
+            "$mod, Q, killactive,"
+            "$mod, F, togglefloating,"
+            "$mod, F11, fullscreen,"
 
-          # --- Session Management ---
-          "$mod, L, exec, hyprlock"        # Lock the screen
-          "$mod SHIFT, E, exec, wlogout"   # Show the logout menu
-          "$mod CTRL, Q, exit,"          # Exit Hyprland
+            # --- Focus ---
+            "$mod, left, movefocus, l"
+            "$mod, right, movefocus, r"
+            "$mod, up, movefocus, u"
+            "$mod, down, movefocus, d"
 
-          # --- Utilities ---
-          "$mod SHIFT, S, exec, grim -g \"$(slurp)\"" # Screenshot a region
-        ] ++ (
-          # Workspaces
-          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-          builtins.concatLists (builtins.genList (i:
-            let ws = i + 1;
-            in [
-              "$mod, code:1${toString i}, workspace, ${toString ws}"
-              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-            ]
-          ) 9)
-        );
+            # --- Session Management ---
+            "$mod, L, exec, hyprlock" # Lock the screen
+            "$mod SHIFT, E, exec, wlogout" # Show the logout menu
+            "$mod CTRL, Q, exit," # Exit Hyprland
+
+            # --- Utilities ---
+            "$mod SHIFT, S, exec, grim -g \"$(slurp)\"" # Screenshot a region
+          ]
+          ++ (
+            # Workspaces
+            # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+            builtins.concatLists (builtins.genList (
+                i: let
+                  ws = i + 1;
+                in [
+                  "$mod, code:1${toString i}, workspace, ${toString ws}"
+                  "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+                ]
+              )
+              9)
+          );
         # --- Mouse bindings ---
         bindm = [
           "$mod, mouse:272, movewindow"
@@ -155,7 +162,6 @@ lib.mkIf isDesktop {
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
           ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ];
-        
       };
     };
   };

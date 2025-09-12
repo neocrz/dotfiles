@@ -12,7 +12,7 @@
     nix repl --file repl.nix "$@"
   '';
 
-  commonApps = 
+  commonApps =
     (with pkgs.unstable; [
       my-nix-fast-repl
       # Apps
@@ -20,32 +20,33 @@
       btop
       bzip2
       fastfetch
+      ffmpeg
       gnutar
       gh
       gzip
       p7zip
       unzip
-      tmux
       xz
       yazi
       zip
-    ]) ++
-    (with pkgs.neocrz; [
+    ])
+    ++ (with pkgs.neocrz; [
       # MY PKGS
       nvf
       my-echo
     ]);
 
   # mostly GUI
-  desktopApps = (with pkgs.unstable; [
-      bitwarden-desktop
-      floorp
-      foliate
-      godot
-      ghostty
-      obsidian
-      vesktop
-    ]);
+  desktopApps = with pkgs.unstable; [
+    bitwarden-desktop
+    vscodium-fhs
+    floorp
+    foliate
+    godot
+    ghostty
+    obsidian
+    vesktop
+  ];
 
   # Specifics
   nixOSApps = with pkgs; [];
@@ -55,7 +56,6 @@
     gnugrep
     gnupg
     gnused
-
   ];
 in {
   programs.direnv = {
@@ -63,7 +63,7 @@ in {
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
-  
+
   home.packages =
     commonApps
     ++ (
