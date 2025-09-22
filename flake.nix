@@ -19,6 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    nixgl.url = "github:nix-community/nixGL";
   };
 
   outputs = {
@@ -28,6 +29,7 @@
     nixpkgs-neocrz,
     nix-on-droid,
     home-manager,
+    nixGL,
     ...
   } @ inputs: let
     unstableOverlay = system: final: prev: {
