@@ -106,5 +106,24 @@
         ];
         home-manager-path = home-manager.outPath;
       };
+    homeConfigurations.err = let
+      system = "x86_64-linux";
+      pkgs = mkPkgs {
+        inherit system;
+        o = [ nixgl.overlay ];
+      };
+    in
+    home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        modules = [ ./hosts/ext ];
+
+        extraSpecialArgs = {
+          inherit inputs;
+          isNixOS   = false;
+          isDesktop = true;
+          isDroid   = false;
+        };
+    };
   };
 }
