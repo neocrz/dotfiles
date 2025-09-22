@@ -29,7 +29,7 @@
     nixpkgs-neocrz,
     nix-on-droid,
     home-manager,
-    nixGL,
+    nixgl,
     ...
   } @ inputs: let
     unstableOverlay = system: final: prev: {
