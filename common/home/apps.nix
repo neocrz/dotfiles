@@ -38,6 +38,7 @@
 
   # mostly GUI
   desktopApps = with pkgs.unstable; [
+    anydesk
     bitwarden-desktop
     vscodium-fhs
     floorp

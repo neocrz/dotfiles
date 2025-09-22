@@ -27,7 +27,6 @@ lib.mkIf isDesktop {
 
   environment.systemPackages = with pkgs; [
     kitty
-    wl-clipboard
   ];
 
   # Unicode
@@ -37,7 +36,7 @@ lib.mkIf isDesktop {
     imports = [../home/waybar.nix];
     home.packages = with pkgs; [
       # Hyprland Ecosystem
-      hyprpaper # Wallpaper utility
+      # hyprpaper # Wallpaper utility
       hyprlock # Screen locker
       hypridle # Idle daemon
       hyprpicker # Color Picker
@@ -162,6 +161,14 @@ lib.mkIf isDesktop {
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
           ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ];
+      };
+    };
+
+    services.hyprpaper = {
+      enable = true;
+      settings = {
+        preload = ["/home/eee/ARQ/imgs/1751752844868753.webp"];
+        wallpaper = [",/home/eee/ARQ/imgs/1751752844868753.webp"];
       };
     };
   };
