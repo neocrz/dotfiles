@@ -40,13 +40,14 @@
   desktopApps = with pkgs.unstable; [
     anydesk
     bitwarden-desktop
-    vscodium-fhs
+    krita
     floorp
     foliate
     godot
     ghostty
     obsidian
     vesktop
+    vscodium-fhs
   ];
 
   # Specifics

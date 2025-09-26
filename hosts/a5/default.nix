@@ -23,8 +23,14 @@ in let
 
   modulesPathList = modulesPathListCommon ++ modulesPathListThis;
 in {
+  programs.nix-ld.enable = true;
+
   nix = {
     settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
+    settings.substituters = ["https://nix-community.cachix.org"];
+    settings.trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
     nixPath = ["nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}"];
     registry.nixpkgs.flake = inputs.nixpkgs;
     registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
