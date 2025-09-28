@@ -29,7 +29,6 @@
       xz
       yazi
       zip
-      zoxide
     ])
     ++ (with pkgs.neocrz; [
       # MY PKGS
