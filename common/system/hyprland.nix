@@ -36,7 +36,6 @@ lib.mkIf isDesktop {
     imports = [../home/waybar.nix];
     home.packages = with pkgs; [
       # Hyprland Ecosystem
-      # hyprpaper # Wallpaper utility
       hyprlock # Screen locker
       hypridle # Idle daemon
       hyprpicker # Color Picker
@@ -87,7 +86,6 @@ lib.mkIf isDesktop {
         # Startup commands
         exec-once = [
           "waybar"
-          "hyprpaper"
           "syncthing"
         ];
 
@@ -168,7 +166,7 @@ lib.mkIf isDesktop {
       enable = true;
       settings = {
         preload = ["/home/eee/ARQ/imgs/1751752844868753.webp"];
-        wallpaper = [",/home/eee/ARQ/imgs/1751752844868753.webp"];
+        wallpaper = [", /home/eee/ARQ/imgs/1751752844868753.webp"];
       };
     };
   };

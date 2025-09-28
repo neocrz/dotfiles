@@ -29,6 +29,7 @@
       xz
       yazi
       zip
+      zoxide
     ])
     ++ (with pkgs.neocrz; [
       # MY PKGS
@@ -45,6 +46,7 @@
     foliate
     godot
     ghostty
+    mpv
     obsidian
     vesktop
     vscodium-fhs
