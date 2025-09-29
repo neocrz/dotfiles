@@ -1,14 +1,19 @@
-{ config, pkgs, inputs, ... }:
-let
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}: let
   modulesPath = ../../common/home;
   modulesList = [
     "apps.nix"
     "bash.nix"
+    "confnix.nix"
     "git.nix"
+    "tmux.nix"
   ];
   modulesPathList = map (mod: modulesPath + mod) (map (mod: "/" + mod) modulesList);
-in
-{
+in {
   home.username = "err";
   home.homeDirectory = "/home/err";
   home.stateVersion = "25.05";
@@ -16,7 +21,7 @@ in
 
   imports = modulesPathList;
 
-  home.programs = with pkgs; [
-    pkgs.nixgl.nixGLDefault
-  ];
+  # home.programs = with pkgs; [
+  #   nixgl.nixGLIntel
+  # ];
 }

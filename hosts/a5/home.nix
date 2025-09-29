@@ -8,6 +8,7 @@
   modulesList = [
     "apps.nix"
     "bash.nix"
+    "confnix.nix"
     "git.nix"
     "services.nix"
     "tmux.nix"
