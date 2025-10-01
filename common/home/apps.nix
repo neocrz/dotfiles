@@ -1,7 +1,10 @@
 # home/modules/apps.nix
-{ pkgs, lib, config, ... }:
-
-let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   isDroid = config.isDroid;
   my-nix-fast-repl = pkgs.writeShellScriptBin "my-nix-fast-repl" ''
     #!/usr/bin/env bash
@@ -42,6 +45,7 @@ let
     ghostty
     mpv
     obsidian
+    penpot-desktop
     vesktop
   ];
 
@@ -53,10 +57,10 @@ let
     gnupg
     gnused
   ];
-in
-{
-  home.packages = []
-  ++ commonApps
-  ++ lib.optionals isDroid droidApps
-  ++ lib.optionals (!isDroid) desktopApps;
+in {
+  home.packages =
+    []
+    ++ commonApps
+    ++ lib.optionals isDroid droidApps
+    ++ lib.optionals (!isDroid) desktopApps;
 }

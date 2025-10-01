@@ -1,15 +1,18 @@
-
-{ inputs, pkgs, ... }: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes" "pipe-operators"];
-      substituters = [ "https://nix-community.cachix.org" ];
+      substituters = ["https://nix-community.cachix.org"];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
-      trusted-users = [ "root" "eee"];
+      trusted-users = ["root" "@wheel"];
     };
     package = pkgs.nix;
     nixPath = ["nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}"];

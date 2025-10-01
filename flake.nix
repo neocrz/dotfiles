@@ -88,6 +88,15 @@
           extraSpecialArgs = {inherit inputs;};
           modules = [ ./home/eee ];
         };
+      err = let
+        system = "x86_64-linux";
+        pkgs = mkPkgs {inherit system;};
+      in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = {inherit inputs;};
+          modules = [ ./home/err ];
+      };
     };
     nixOnDroidConfigurations.default = let
       system = "aarch64-linux";
