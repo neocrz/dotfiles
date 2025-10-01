@@ -1,10 +1,8 @@
-{
-  pkgs,
-  isNixOS,
-  isDroid,
-  isDesktop,
-  ...
-}: let
+# home/modules/apps.nix
+{ pkgs, lib, config, ... }:
+
+let
+  isDroid = config.isDroid;
   my-nix-fast-repl = pkgs.writeShellScriptBin "my-nix-fast-repl" ''
     #!/usr/bin/env bash
     cd "${toString ../..}"
@@ -31,28 +29,23 @@
       zip
     ])
     ++ (with pkgs.neocrz; [
-      # MY PKGS
       nvf
-      my-echo
     ]);
 
   # mostly GUI
   desktopApps = with pkgs.unstable; [
-    anydesk
     bitwarden-desktop
     krita
-    floorp
+    floorp-bin
     foliate
     godot
     ghostty
     mpv
     obsidian
     vesktop
-    vscodium-fhs
   ];
 
   # Specifics
-  nixOSApps = with pkgs; [];
   droidApps = with pkgs; [
     diffutils
     findutils
@@ -60,28 +53,10 @@
     gnupg
     gnused
   ];
-in {
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true;
-    nix-direnv.enable = true;
-  };
-
-  home.packages =
-    commonApps
-    ++ (
-      if isDesktop
-      then desktopApps
-      else []
-    )
-    ++ (
-      if isNixOS
-      then nixOSApps
-      else []
-    )
-    ++ (
-      if isDroid
-      then droidApps
-      else []
-    );
+in
+{
+  home.packages = []
+  ++ commonApps
+  ++ lib.optionals isDroid droidApps
+  ++ lib.optionals (!isDroid) desktopApps;
 }

@@ -1,14 +1,15 @@
-{ config, pkgs, isNixOS, isDroid, isDesktop, ... }:
-let
-  commonApps = with pkgs; [ ] ++ (with pkgs.unstable; [
-  ]);
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  isDroid = config.isDroid;
 
-  desktopApps = with pkgs; [ ] ++ (with pkgs.unstable; [
-  ]);
-
-  nixOSApps = with pkgs; [
+  commonApps = [];
+  desktopApps = with pkgs.unstable; [
+    appimage-run
   ];
-
   droidApps = with pkgs; [
     openssh
     procps
@@ -18,24 +19,19 @@ let
     hostname
     man
   ];
-
-  systemPackages = commonApps ++
-    (if isDesktop then desktopApps else []) ++
-    (if isNixOS then nixOSApps else []) ++
-    (if isDroid then droidApps else []);
-in
-{
-  environment = if isNixOS then {
-
-    systemPackages = systemPackages;
-  
-  } else if isDroid then {
-
-    packages = systemPackages;
-
-  } else {
-
-    systemPackages = systemPackages;
-
-};
+in let
+  systemPackages =
+    []
+    ++ commonApps
+    ++ lib.optionals isDroid droidApps
+    ++ lib.optionals (!isDroid) desktopApps;
+in {
+  environment =
+    if isDroid
+    then {
+      packages = systemPackages;
+    }
+    else {
+      systemPackages = systemPackages;
+    };
 }

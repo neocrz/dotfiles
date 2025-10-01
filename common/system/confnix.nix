@@ -1,5 +1,4 @@
-
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, lib, config, ... }: {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
   nix = {
@@ -15,9 +14,10 @@
     nixPath = ["nixpkgs=${inputs.nixpkgs} nixpkgs-unstable=${inputs.nixpkgs-unstable}"];
     registry.nixpkgs.flake = inputs.nixpkgs;
     registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+  } // lib.optionalAttrs (!config.isDroid) {
     gc = {
       automatic = true;
-      frequency = "weekly"; # "daily"
+      dates = "weekly"; # "daily"
       options = "--delete-older-than 30d";
     };
   };

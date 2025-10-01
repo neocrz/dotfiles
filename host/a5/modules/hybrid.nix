@@ -1,5 +1,8 @@
-{config, pkgs, ...}:
 {
+  config,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nvidia-offload" ''
       #!/usr/bin/env bash
@@ -23,7 +26,7 @@
   hardware.nvidia = {
     open = false;
     modesetting.enable = true;
-    
+
     prime = {
       offload = {
         enable = true;

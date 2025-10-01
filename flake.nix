@@ -1,5 +1,5 @@
 {
-  description = "My dotfiles";
+  description = "My Dotfiles";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
@@ -19,7 +19,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    nixgl.url = "github:nix-community/nixGL";
   };
 
   outputs = {
@@ -29,9 +28,9 @@
     nixpkgs-neocrz,
     nix-on-droid,
     home-manager,
-    nixgl,
     ...
   } @ inputs: let
+    # HELPERS
     unstableOverlay = system: final: prev: {
       unstable = import nixpkgs-unstable {
         inherit prev;
@@ -66,24 +65,28 @@
         pkgs = mkPkgs {inherit system;};
       in
         nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
-            isNixOS = true;
-            isDesktop = true;
-            isDroid = false;
-          };
-
+          specialArgs = {inherit inputs;};
           modules = [
             {
               nixpkgs.overlays = [
                 (unstableOverlay system)
                 myPkgsOverlay
               ];
-              nixpkgs.config.allowUnfree = nixpkgs.lib.mkDefault true;
-              nixpkgs.config.android_sdk.accept_license = true;
             }
-            ./hosts/a5
+            ./host/a5
           ];
+        };
+    };
+
+    homeConfigurations = {
+      eee = let
+        system = "x86_64-linux";
+        pkgs = mkPkgs {inherit system;};
+      in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = {inherit inputs;};
+          modules = [ ./home/eee ];
         };
     };
     nixOnDroidConfigurations.default = let
@@ -98,34 +101,12 @@
 
         extraSpecialArgs = {
           inherit inputs;
-          isNixOS = false;
-          isDesktop = false;
-          isDroid = true;
         };
 
         modules = [
-          ./hosts/droid
+          ./host/droid
         ];
         home-manager-path = home-manager.outPath;
       };
-    homeConfigurations.err = let
-      system = "x86_64-linux";
-      pkgs = mkPkgs {
-        inherit system;
-        o = [ nixgl.overlay ];
-      };
-    in
-    home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        modules = [ ./hosts/ext ];
-
-        extraSpecialArgs = {
-          inherit inputs;
-          isNixOS   = false;
-          isDesktop = true;
-          isDroid   = false;
-        };
-    };
   };
 }

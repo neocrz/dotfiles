@@ -1,8 +1,4 @@
-{ pkgs, ... }:{
-  programs.appimage.enable = true;
-  services.flatpak.enable = true;
-  xdg.portal.enable = true;
-
+{pkgs, ...}: {
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
@@ -14,7 +10,9 @@
     lutris
     playonlinux
     steam-run
-    wineWowPackages.waylandFull
+    wineWowPackages.staging
     winetricks
   ];
+
+  programs.gamemode.enable = true;
 }
