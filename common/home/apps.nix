@@ -37,6 +37,7 @@
 
   # mostly GUI
   desktopApps = with pkgs.unstable; [
+    audacity
     bitwarden-desktop
     krita
     floorp-bin
@@ -46,6 +47,7 @@
     mpv
     obsidian
     penpot-desktop
+    qbittorrent
     vesktop
   ];
 
@@ -58,6 +60,11 @@
     gnused
   ];
 in {
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
   home.packages =
     []
     ++ commonApps
