@@ -21,6 +21,7 @@ in let
   modulesPath = ./modules;
   modulesList = [
     "hybrid.nix"
+    "virt.nix"
   ];
   modulesPathListThis = map (mod: modulesPath + mod) <| map (mod: "/" + mod) modulesList;
 

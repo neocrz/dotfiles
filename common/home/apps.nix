@@ -36,20 +36,24 @@
     ]);
 
   # mostly GUI
-  desktopApps = with pkgs.unstable; [
-    audacity
-    bitwarden-desktop
-    krita
-    floorp-bin
-    foliate
-    godot
-    ghostty
-    mpv
-    obsidian
-    penpot-desktop
-    qbittorrent
-    vesktop
-  ];
+  desktopApps = with pkgs.unstable;
+    [
+      # xclip
+      wl-clipboard-x11
+      audacity
+      bitwarden-desktop
+      krita
+      floorp-bin
+      foliate
+      godot
+      ghostty
+      mpv
+      obsidian
+      penpot-desktop
+      qbittorrent
+      vesktop
+    ]
+    ++ (with pkgs; [ollama-cuda]);
 
   # Specifics
   droidApps = with pkgs; [
