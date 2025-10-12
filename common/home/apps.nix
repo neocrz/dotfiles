@@ -52,6 +52,7 @@
       penpot-desktop
       qbittorrent
       vesktop
+      vlc
     ]
     ++ (with pkgs; [ollama-cuda]);
 

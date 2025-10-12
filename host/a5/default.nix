@@ -10,7 +10,7 @@
   modulesPath = ../../common/system;
   modulesList = [
     "options.nix"
-
+    "fonts.nix"
     "apps.nix"
     "confnix.nix"
     "games.nix"
