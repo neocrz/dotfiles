@@ -38,6 +38,7 @@
   # mostly GUI
   desktopApps = with pkgs.unstable;
     [
+      anydesk
       # xclip
       wl-clipboard-x11
       audacity
